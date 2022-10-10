@@ -1,39 +1,44 @@
-const game = {
-    'suspects': [
-        {
-            name: "Rusty",
-            color: "orange"
-        },{
-            name: "Miss Scarlet",
-            color: "red"
+_.each = function(list, callback){
+    if (Array.isArray(list)){
+        for (let i = 0; i < list.length; i++){
+            callback(list[i], i, list);
         }
-    ]
-}
-
-for (let i = 0; i < game.suspects.length; i++ ){
-    const {name, color} = game.suspects[i]; 
-    //let name = game.suspects[i].name;
-    //let color = game.suspects[i].color;
-    console.log(`index is ${i}`);
-    console.log(`${name}'s color is ${color}`);
-    if (color == 'red'){
-        game.suspects[i].guilty = true;
+    } else {
+        for (let key in list){
+            callback(list[key], key, list)
+        }
     }
+};
+
+_.each(['sarah', 'jon', 'kathy', 'jeff'], function(name, i, list){
+    if (list[i]){
+        console.log(name, 'is younger than', list[i + 1] )
+    } else {
+        console.log(name, 'is the oldest')
+    }
+});
+
+function CreateSuspectObjects(name){
+    return {
+        name: name,
+        color: name.split(' ')[1],
+        speak(){
+            console.log(`my name is ${name}`)
+        }
+    };
+};
+
+var suspects = ["Miss Scarlet", "Colonel Mustard", "Mr White"];
+
+var suspectList = [];
+
+var missScarlet = CreateSuspectObjects(suspects[0]);
+console.log(missScarlet);
+
+for (var i=0;i < suspects.length; i++){
+    suspectList.push(CreateSuspectObjects(suspects[i]))
 }
-console.log(game);
 
-console.log('---------------------');
+console.log(suspectList);
 
-function printSuspect(suspect, index, suspects){
-    console.log(`index is ${index}`);
-    console.log(`${suspect.name}'s color is ${suspect.color}`);
-}
-
-game.suspects.forEach(printSuspect);
-
-console.log('---------------------');
-
-game.suspects.forEach((suspect, index) => {
-    console.log(`index is ${index}`);
-    console.log(`${suspect.name}'s color is ${suspect.color}`);
-})
+var suspectList = _.each(suspects, CreateSuspectObjects);
